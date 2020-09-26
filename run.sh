@@ -77,10 +77,21 @@ chmod u+x task6
 # Remove the duplicate (second occurance) line from loomings.txt to create a new version of the file and call it loomings-clean.txt
 sort loomings.txt | uniq > loomings-clean.txt
 # Perform diff loomings*txt and produce output
-diff3 loomings*txt >> diff3.txt
-diff <(cat loomings.txt) <(cat loomingsnew.txt) >> diff2.txt
-diff loomings.txt loomings-clean.txt >> diff2.txt
-diff loomingsnew.txt loomings-clean.txt >> diff2.txt
-cat diff2.txt
-cat diff3.txt 
+files=(loomings*txt)
+x=$(ls loomings*txt | wc -l)-1
+for ((i=0,j=$x;i<=j;i++,j--))
+do
+if [ "$i" -le "$j" ]
 
+      then
+      diff ${files[$i]} ${files[$j]} >> diffs.txt
+      else
+      echo >> /dev/null
+fi
+done
+
+cat diffs.txt 
+
+# When doing research on Q6, I found a new function for diff, which is diff3, so below is my solution based on diff3
+
+diff3 loomings*txt
